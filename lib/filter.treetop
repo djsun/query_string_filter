@@ -63,7 +63,7 @@ grammar Filter
   end
   
   rule key
-    [a-z]+
+    [a-z_]+
     {
       def eval
         text_value
@@ -89,14 +89,36 @@ grammar Filter
   end
   
   rule string
-    [A-Z_a-z0-9]+
+    double_quoted_string / single_quoted_string / unquoted_string
+  end
+
+  rule double_quoted_string
+    '"' (!'"' .)* '"'
+    {
+      def eval
+        text_value[1 ... -1]
+      end
+    }
+  end
+
+  rule single_quoted_string
+    '\'' (!'\'' .)* '\''
+    {
+      def eval
+        text_value[1 ... -1]
+      end
+    }
+  end
+  
+  rule unquoted_string
+    [A-Za-z0-9_]+
     {
       def eval
         text_value
       end
     }
   end
-  
+
   rule integer
     [0-9]+
     {
