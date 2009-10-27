@@ -1,0 +1,95 @@
+grammar Filter
+
+  rule expression
+    match
+  end
+  
+  rule match
+    fuzzy / equality / inequality
+  end
+
+  rule fuzzy
+    k:key space ':' space v:value {
+      def eval
+        { k.eval.intern => v.eval }
+      end
+    }
+  end
+
+  rule equality
+    k:key space '=' space v:value {
+      def eval
+        { k.eval.intern => v.eval }
+      end
+    }
+  end
+
+  rule inequality
+    gt / gte / lt / lte
+  end
+  
+  rule gt
+    k:key space '>' space v:value {
+      def eval
+        { k.eval.intern => { '$gt' => v.eval } }
+      end
+    }
+  end
+  
+  rule gte
+    k:key space '>=' space v:value {
+      def eval
+        { k.eval.intern => { '$gte' => v.eval } }
+      end
+    }
+  end
+  
+  rule lt
+    k:key space '<' space v:value {
+      def eval
+        { k.eval.intern => { '$lt' => v.eval } }
+      end
+    }
+  end
+  
+  rule lte
+    k:key space '<=' space v:value {
+      def eval
+      { k.eval.intern => { '$lte' => v.eval } }
+      end
+    }
+  end
+  
+  rule key
+    [a-z]+ {
+      def eval
+        text_value
+      end
+    }
+  end
+  
+  rule value
+    integer / string
+  end
+  
+  rule string
+    [A-Z_a-z0-9]+ {
+      def eval
+        text_value
+      end
+    }
+  end
+  
+  rule integer
+    [0-9]+ {
+      def eval
+        text_value.to_i
+      end
+    }
+  end
+  
+  rule space
+    ' '*
+  end
+
+end
