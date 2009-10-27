@@ -5,53 +5,80 @@ describe "QueryStringFilter" do
   before do
     @filter = QueryStringFilter.new
   end
-
-  it ": with string" do
-    expected = {
-      :value => { '$gt' => 3 }
-    }
-    @filter.process("value>3").should == expected
-    @filter.process("value > 3").should == expected
+  
+  describe "basic" do
+  
+    it ": with string" do
+      expected = {
+        :name => /david/
+      }
+      ["name:david", "name : david"].each do |s|
+        @filter.process(s).should == expected
+      end
+    end
+  
+    it ": with number" do
+      expected = { :count => /77/ }
+      ["count:77", "count : 77"].each do |s|
+        @filter.process(s).should == expected
+      end
+    end
+  
+    it ">" do
+      expected = { :value => { '$gt' => 12 } }
+      ["value>12", "value > 12"].each do |s|
+        @filter.process(s).should == expected
+      end
+    end
+  
+    it "<" do
+      expected = { :value => { '$lt' => 12 } }
+      ["value<12", "value < 12"].each do |s|
+        @filter.process(s).should == expected
+      end
+    end
+  
+    it ">=" do
+      expected = { :value => { '$gte' => 12 } }
+      ["value>=12", "value >= 12"].each do |s|
+        @filter.process(s).should == expected
+      end
+    end
+  
+    it "<=" do
+      expected = { :value => { '$lte' => 12 } }
+      ["value<=12", "value <= 12"].each do |s|
+        @filter.process(s).should == expected
+      end
+    end
+    
   end
+  
+  describe "compound" do
+    
+    it ": with 2 strings" do
+      expected = {
+        :title => /election|texas/
+      }
+      [
+        "title:election,texas",
+        "title : election , texas"
+      ].each do |s|
+        @filter.process(s).should == expected
+      end
+    end
 
-  it ": with number" do
-    expected = {
-      :name => 'david'
-    }
-    @filter.process("name:david").should == expected
-    @filter.process("name : david").should == expected
-  end
-
-  it ">" do
-    expected = {
-      :value => { '$gt' => 12 }
-    }
-    @filter.process("value>12").should == expected
-    @filter.process("value > 12").should == expected
-  end
-
-  it "<" do
-    expected = {
-      :value => { '$lt' => 12 }
-    }
-    @filter.process("value<12").should == expected
-    @filter.process("value < 12").should == expected
-  end
-
-  it ">=" do
-    expected = {
-      :value => { '$gte' => 12 }
-    }
-    @filter.process("value>=12").should == expected
-    @filter.process("value >= 12").should == expected
-  end
-
-  it "<=" do
-    expected = {
-      :value => { '$lte' => 12 }
-    }
-    @filter.process("value<=12").should == expected
-    @filter.process("value <= 12").should == expected
+    it ": with 3 strings" do
+      expected = {
+        :title => /election|texas|bob/
+      }
+      [
+        "title:election,texas,bob",
+      ].each do |s|
+        @filter.process(s).should == expected
+      end
+    end
+    
   end
 
 end

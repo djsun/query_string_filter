@@ -1,25 +1,23 @@
 grammar Filter
 
-  rule expression
-    match
-  end
-  
   rule match
     fuzzy / equality / inequality
   end
 
   rule fuzzy
-    k:key space ':' space v:value {
+    key ospace ':' ospace strings
+    {
       def eval
-        { k.eval.intern => v.eval }
+        { key.eval.intern => /#{strings.eval}/ }
       end
     }
   end
 
   rule equality
-    k:key space '=' space v:value {
+    key ospace '=' ospace value
+    {
       def eval
-        { k.eval.intern => v.eval }
+        { key.eval.intern => value.eval }
       end
     }
   end
@@ -29,39 +27,44 @@ grammar Filter
   end
   
   rule gt
-    k:key space '>' space v:value {
+    key ospace '>' ospace value
+    {
       def eval
-        { k.eval.intern => { '$gt' => v.eval } }
+        { key.eval.intern => { '$gt' => value.eval } }
       end
     }
   end
   
   rule gte
-    k:key space '>=' space v:value {
+    key ospace '>=' ospace value
+    {
       def eval
-        { k.eval.intern => { '$gte' => v.eval } }
+        { key.eval.intern => { '$gte' => value.eval } }
       end
     }
   end
   
   rule lt
-    k:key space '<' space v:value {
+    key ospace '<' ospace value
+    {
       def eval
-        { k.eval.intern => { '$lt' => v.eval } }
+        { key.eval.intern => { '$lt' => value.eval } }
       end
     }
   end
   
   rule lte
-    k:key space '<=' space v:value {
+    key ospace '<=' ospace value
+    {
       def eval
-      { k.eval.intern => { '$lte' => v.eval } }
+        { key.eval.intern => { '$lte' => value.eval } }
       end
     }
   end
   
   rule key
-    [a-z]+ {
+    [a-z]+
+    {
       def eval
         text_value
       end
@@ -72,8 +75,22 @@ grammar Filter
     integer / string
   end
   
+  rule strings
+    string more:(ospace ',' ospace string)*
+    {
+      def eval
+        strings.map { |e| e.eval }.join("|")
+      end
+      
+      def strings
+        [string] + more.elements.map { |e| e.string }
+      end
+    }
+  end
+  
   rule string
-    [A-Z_a-z0-9]+ {
+    [A-Z_a-z0-9]+
+    {
       def eval
         text_value
       end
@@ -81,15 +98,20 @@ grammar Filter
   end
   
   rule integer
-    [0-9]+ {
+    [0-9]+
+    {
       def eval
         text_value.to_i
       end
     }
   end
   
-  rule space
+  rule ospace
     ' '*
+  end
+  
+  rule space
+    ' '+
   end
 
 end
