@@ -10,6 +10,7 @@ begin
     gem.email = "djames@sunlightfoundation.com"
     gem.homepage = "http://github.com/djsun/query_string_filter"
     gem.authors = ["David James"]
+    gem.add_dependency('treetop', '>= 1.4.2')
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
