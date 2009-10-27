@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "query_string_filter"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Convert from a filter query string param to a MongoMapper conditions hash}
+    gem.description = %Q{Convert a filter param in a query string to a conditions hash useful for MongoMapper searching}
     gem.email = "djames@sunlightfoundation.com"
     gem.homepage = "http://github.com/djsun/query_string_filter"
     gem.authors = ["David James"]
