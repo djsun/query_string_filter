@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{query_string_filter}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David James"]
   s.date = %q{2009-10-27}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{Convert a filter param in a query string to a conditions hash useful for MongoMapper searching}
   s.email = %q{djames@sunlightfoundation.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{TODO: one-line summary of your gem}
+  s.summary = %q{Convert from a filter query string param to a MongoMapper conditions hash}
   s.test_files = [
     "spec/query_string_filter_spec.rb",
      "spec/spec_helper.rb"
