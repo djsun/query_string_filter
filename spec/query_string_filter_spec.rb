@@ -12,6 +12,12 @@ describe "QueryStringFilter" do
         @filter.parse("something")
       }.should raise_error(QueryStringFilter::ParseError)
     end
+    
+    it "no quotes or connectives" do
+      lambda {
+        @filter.parse("name=David James")
+      }.should raise_error(QueryStringFilter::ParseError)
+    end
   end
   
   describe "keys" do
