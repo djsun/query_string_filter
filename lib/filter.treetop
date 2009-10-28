@@ -111,7 +111,7 @@ grammar Filter
   end
   
   rule unquoted_string
-    [A-Za-z0-9_]+
+    [^<>=, ]+
     {
       def eval
         text_value

@@ -32,6 +32,12 @@ describe "QueryStringFilter" do
         :foo => "bar camp"
       }
     end
+
+    it "value with http://" do
+      @filter.parse("url = http://cnn.com").should == {
+        :url => "http://cnn.com"
+      }
+    end
   end
   
   describe "basic operators" do
