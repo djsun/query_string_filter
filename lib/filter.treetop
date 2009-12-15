@@ -63,7 +63,7 @@ grammar Filter
   end
   
   rule key
-    [a-z_]+
+    [a-z_\.]+
     {
       def eval
         text_value

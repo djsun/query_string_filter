@@ -27,6 +27,11 @@ describe "QueryStringFilter" do
       }
     end
 
+    it "with period" do
+      @filter.parse("released.year = 2008").should == {
+        'released.year' => 2008
+      }
+    end
   end
   
   describe "values" do
