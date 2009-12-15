@@ -21,21 +21,24 @@ describe "QueryStringFilter" do
   end
   
   describe "keys" do
-    it "key with underscore" do
+    it "with underscore" do
       @filter.parse("with_underscore = test").should == {
-        :with_underscore => "test"
+        "with_underscore" => "test"
       }
     end
 
-    it "value with single quotes" do
+  end
+  
+  describe "values" do
+    it "with single quotes" do
       @filter.parse("foo = 'bar camp'").should == {
-        :foo => "bar camp"
+        "foo" => "bar camp"
       }
     end
 
-    it "value with http://" do
+    it "with http://" do
       @filter.parse("url = http://cnn.com").should == {
-        :url => "http://cnn.com"
+        "url" => "http://cnn.com"
       }
     end
   end
@@ -43,7 +46,7 @@ describe "QueryStringFilter" do
   describe "basic operators" do
     it ": with string" do
       expected = {
-        :name => /david/
+        "name" => /david/
       }
       ["name:david", "name : david"].each do |s|
         @filter.parse(s).should == expected
@@ -51,7 +54,7 @@ describe "QueryStringFilter" do
     end
   
     it ": with number" do
-      expected = { :count => /77/ }
+      expected = { "count" => /77/ }
       ["count:77", "count : 77"].each do |s|
         @filter.parse(s).should == expected
       end
@@ -59,7 +62,7 @@ describe "QueryStringFilter" do
 
     it "= with string" do
       expected = {
-        :name => "David"
+        "name" => "David"
       }
       [
         %(name=David),
@@ -68,30 +71,30 @@ describe "QueryStringFilter" do
         @filter.parse(s).should == expected
       end
     end
-  
+    
     it ">" do
-      expected = { :value => { '$gt' => 12 } }
+      expected = { "value" => { '$gt' => 12 } }
       ["value>12", "value > 12"].each do |s|
         @filter.parse(s).should == expected
       end
     end
   
     it "<" do
-      expected = { :value => { '$lt' => 12 } }
+      expected = { "value" => { '$lt' => 12 } }
       ["value<12", "value < 12"].each do |s|
         @filter.parse(s).should == expected
       end
     end
   
     it ">=" do
-      expected = { :value => { '$gte' => 12 } }
+      expected = { "value" => { '$gte' => 12 } }
       ["value>=12", "value >= 12"].each do |s|
         @filter.parse(s).should == expected
       end
     end
   
     it "<=" do
-      expected = { :value => { '$lte' => 12 } }
+      expected = { "value" => { '$lte' => 12 } }
       ["value<=12", "value <= 12"].each do |s|
         @filter.parse(s).should == expected
       end
@@ -101,7 +104,7 @@ describe "QueryStringFilter" do
   describe "compound" do
     it ": with 2 strings" do
       expected = {
-        :title => /election|texas/
+        "title" => /election|texas/
       }
       [
         "title:election,texas",
@@ -113,7 +116,7 @@ describe "QueryStringFilter" do
 
     it ": with 3 strings" do
       expected = {
-        :title => /election|texas|bob/
+        "title" => /election|texas|bob/
       }
       [
         "title:election,texas,bob",

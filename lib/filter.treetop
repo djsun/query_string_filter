@@ -8,7 +8,7 @@ grammar Filter
     key ospace ':' ospace strings
     {
       def eval
-        { key.eval.intern => /#{strings.eval}/ }
+        { key.eval => /#{strings.eval}/ }
       end
     }
   end
@@ -17,7 +17,7 @@ grammar Filter
     key ospace '=' ospace value
     {
       def eval
-        { key.eval.intern => value.eval }
+        { key.eval => value.eval }
       end
     }
   end
@@ -30,7 +30,7 @@ grammar Filter
     key ospace '>' ospace value
     {
       def eval
-        { key.eval.intern => { '$gt' => value.eval } }
+        { key.eval => { '$gt' => value.eval } }
       end
     }
   end
@@ -39,7 +39,7 @@ grammar Filter
     key ospace '>=' ospace value
     {
       def eval
-        { key.eval.intern => { '$gte' => value.eval } }
+        { key.eval => { '$gte' => value.eval } }
       end
     }
   end
@@ -48,7 +48,7 @@ grammar Filter
     key ospace '<' ospace value
     {
       def eval
-        { key.eval.intern => { '$lt' => value.eval } }
+        { key.eval => { '$lt' => value.eval } }
       end
     }
   end
@@ -57,7 +57,7 @@ grammar Filter
     key ospace '<=' ospace value
     {
       def eval
-        { key.eval.intern => { '$lte' => value.eval } }
+        { key.eval => { '$lte' => value.eval } }
       end
     }
   end
