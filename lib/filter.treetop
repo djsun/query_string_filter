@@ -1,6 +1,19 @@
 grammar Filter
 
   rule match
+    and_expression / simple
+  end
+  
+  rule and_expression
+    s1:simple ospace 'and' ospace s2:simple
+    {
+      def eval
+        s1.eval.merge(s2.eval)
+      end
+    }
+  end
+  
+  rule simple
     fuzzy / equality / inequality
   end
 

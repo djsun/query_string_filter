@@ -130,5 +130,15 @@ describe "QueryStringFilter" do
       end
     end
   end
+  
+  describe "and" do
+    it "double" do
+      actual = %(format="xml" and count=13)
+      @filter.parse(actual).should == {
+        "format" => "xml",
+        "count"  => 13,
+      }
+    end
+  end
 
 end
