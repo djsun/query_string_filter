@@ -139,6 +139,15 @@ describe "QueryStringFilter" do
         "count"  => 13,
       }
     end
+
+    it "triple" do
+      actual = %(format="xml" and count=13 and size=64)
+      @filter.parse(actual).should == {
+        "format" => "xml",
+        "count"  => 13,
+        "size"   => 64,
+      }
+    end
   end
 
 end

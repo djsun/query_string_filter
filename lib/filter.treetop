@@ -5,10 +5,10 @@ grammar Filter
   end
   
   rule and_expression
-    s1:simple ospace 'and' ospace s2:simple
+    simple ospace 'and' ospace match
     {
       def eval
-        s1.eval.merge(s2.eval)
+        simple.eval.merge(match.eval)
       end
     }
   end
