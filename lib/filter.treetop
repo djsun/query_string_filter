@@ -85,7 +85,7 @@ grammar Filter
   end
   
   rule value
-    integer / string
+    integer / boolean / string
   end
   
   rule strings
@@ -97,6 +97,28 @@ grammar Filter
       
       def strings
         [string] + more.elements.map { |e| e.string }
+      end
+    }
+  end
+  
+  rule boolean
+    boolean_true / boolean_false
+  end
+
+  rule boolean_true
+    'true'
+    {
+      def eval
+        true
+      end
+    }
+  end
+  
+  rule boolean_false
+    'false'
+    {
+      def eval
+        false
       end
     }
   end

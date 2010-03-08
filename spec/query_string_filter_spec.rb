@@ -64,6 +64,30 @@ describe "QueryStringFilter" do
         @filter.parse(s).should == expected
       end
     end
+    
+    it "= with boolean true" do
+      expected = {
+        "top_level" => true
+      }
+      [
+        %(top_level=true),
+        %(top_level = true)
+      ].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
+
+    it "= with boolean false" do
+      expected = {
+        "top_level" => false
+      }
+      [
+        %(top_level=false),
+        %(top_level = false)
+      ].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
 
     it "= with string" do
       expected = {
