@@ -20,7 +20,7 @@ describe "QueryStringFilter" do
     end
   end
   
-  describe "keys" do
+  describe "=" do
     it "with underscore" do
       @filter.parse("with_underscore = test").should == {
         "with_underscore" => "test"
@@ -32,9 +32,7 @@ describe "QueryStringFilter" do
         'released.year' => 2008
       }
     end
-  end
-  
-  describe "values" do
+
     it "with single quotes" do
       @filter.parse("foo = 'bar camp'").should == {
         "foo" => "bar camp"
@@ -46,10 +44,8 @@ describe "QueryStringFilter" do
         "url" => "http://cnn.com"
       }
     end
-  end
-  
-  describe "=" do
-    it "= with true" do
+
+    it "with true" do
       expected = {
         "top_level" => true
       }
@@ -61,7 +57,7 @@ describe "QueryStringFilter" do
       end
     end
 
-    it "= with false" do
+    it "with false" do
       expected = {
         "top_level" => false
       }
@@ -72,8 +68,8 @@ describe "QueryStringFilter" do
         @filter.parse(s).should == expected
       end
     end
-
-    it "= with string" do
+    
+    it "with string" do
       expected = {
         "name" => "David"
       }
@@ -85,7 +81,7 @@ describe "QueryStringFilter" do
       end
     end
 
-    it "= with 2 strings" do
+    it "with 2 strings" do
       expected = {
         "title" => 'election,texas'
       }
@@ -99,7 +95,7 @@ describe "QueryStringFilter" do
   end
   
   describe ":" do
-    it ": with string" do
+    it "with string" do
       expected = {
         "name" => /david/
       }
@@ -108,14 +104,14 @@ describe "QueryStringFilter" do
       end
     end
   
-    it ": with number" do
+    it "with number" do
       expected = { "count" => /77/ }
       ["count:77", "count : 77"].each do |s|
         @filter.parse(s).should == expected
       end
     end
 
-    it ": with 2 strings" do
+    it "with 2 strings" do
       expected = {
         "title" => /election|texas/
       }
@@ -127,7 +123,7 @@ describe "QueryStringFilter" do
       end
     end
 
-    it ": with 3 strings" do
+    it "with 3 strings" do
       expected = {
         "title" => /election|texas|bob/
       }
