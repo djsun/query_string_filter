@@ -21,8 +21,32 @@ describe "QueryStringFilter" do
   end
   
   describe "=" do
-    it "with single quotes" do
+    it "with a number" do
+      @filter.parse("year = 2008").should == {
+        'year' => 2008
+      }
+    end
+
+    it "with a single quoted number" do
+      @filter.parse("year = '2008'").should == {
+        'year' => '2008'
+      }
+    end
+
+    it "with a double quoted number" do
+      @filter.parse(%(year = "2008")).should == {
+        'year' => '2008'
+      }
+    end
+    
+    it "with a single quoted string" do
       @filter.parse("foo = 'bar camp'").should == {
+        "foo" => "bar camp"
+      }
+    end
+
+    it "with a double quoted string" do
+      @filter.parse(%(foo = "bar camp")).should == {
         "foo" => "bar camp"
       }
     end
