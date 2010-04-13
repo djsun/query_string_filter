@@ -92,6 +92,18 @@ describe "QueryStringFilter" do
         @filter.parse(s).should == expected
       end
     end
+    
+    it "with 2 ids" do
+      expected = {
+        "id" => '224bc480f905f74b4c0c000011,4bc481ce05f74b4c100000f7'
+      }
+      [
+        "id=224bc480f905f74b4c0c000011,4bc481ce05f74b4c100000f7",
+        "id = 224bc480f905f74b4c0c000011 , 4bc481ce05f74b4c100000f7"
+      ].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
 
     it "with 2 strings" do
       expected = {
