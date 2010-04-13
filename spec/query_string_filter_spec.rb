@@ -48,24 +48,8 @@ describe "QueryStringFilter" do
     end
   end
   
-  describe "basic operators" do
-    it ": with string" do
-      expected = {
-        "name" => /david/
-      }
-      ["name:david", "name : david"].each do |s|
-        @filter.parse(s).should == expected
-      end
-    end
-  
-    it ": with number" do
-      expected = { "count" => /77/ }
-      ["count:77", "count : 77"].each do |s|
-        @filter.parse(s).should == expected
-      end
-    end
-    
-    it "= with boolean true" do
+  describe "=" do
+    it "= with true" do
       expected = {
         "top_level" => true
       }
@@ -77,7 +61,7 @@ describe "QueryStringFilter" do
       end
     end
 
-    it "= with boolean false" do
+    it "= with false" do
       expected = {
         "top_level" => false
       }
@@ -100,7 +84,62 @@ describe "QueryStringFilter" do
         @filter.parse(s).should == expected
       end
     end
-    
+
+    it "= with 2 strings" do
+      expected = {
+        "title" => 'election,texas'
+      }
+      [
+        "title=election,texas",
+        "title = election , texas"
+      ].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
+  end
+  
+  describe ":" do
+    it ": with string" do
+      expected = {
+        "name" => /david/
+      }
+      ["name:david", "name : david"].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
+  
+    it ": with number" do
+      expected = { "count" => /77/ }
+      ["count:77", "count : 77"].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
+
+    it ": with 2 strings" do
+      expected = {
+        "title" => /election|texas/
+      }
+      [
+        "title:election,texas",
+        "title : election , texas"
+      ].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
+
+    it ": with 3 strings" do
+      expected = {
+        "title" => /election|texas|bob/
+      }
+      [
+        "title:election,texas,bob",
+      ].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
+  end
+  
+  describe "comparators" do
     it ">" do
       expected = { "value" => { '$gt' => 12 } }
       ["value>12", "value > 12"].each do |s|
@@ -125,43 +164,6 @@ describe "QueryStringFilter" do
     it "<=" do
       expected = { "value" => { '$lte' => 12 } }
       ["value<=12", "value <= 12"].each do |s|
-        @filter.parse(s).should == expected
-      end
-    end
-  end
-  
-  describe "compound" do
-    it "= with 2 strings" do
-      expected = {
-        "title" => 'election,texas'
-      }
-      [
-        "title=election,texas",
-        "title = election , texas"
-      ].each do |s|
-        @filter.parse(s).should == expected
-      end
-    end
-
-    it ": with 2 strings" do
-      expected = {
-        "title" => /election|texas/
-      }
-      [
-        "title:election,texas",
-        "title : election , texas"
-      ].each do |s|
-        @filter.parse(s).should == expected
-      end
-    end
-
-    it ": with 3 strings" do
-      expected = {
-        "title" => /election|texas|bob/
-      }
-      [
-        "title:election,texas,bob",
-      ].each do |s|
         @filter.parse(s).should == expected
       end
     end
