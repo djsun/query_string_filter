@@ -7,8 +7,8 @@ grammar Filter
   rule and_expression
     simple ospace 'and' ospace match
     {
-      def eval
-        simple.eval.merge(match.eval)
+      def eval(env={})
+        simple.eval.merge(match.eval(env))
       end
     }
   end
@@ -20,8 +20,8 @@ grammar Filter
   rule fuzzy
     key ospace ':' ospace strings
     {
-      def eval
-        { key.eval => /#{strings.eval}/ }
+      def eval(env={})
+        { key.eval => /#{strings.eval(env)}/ }
       end
     }
   end
@@ -29,8 +29,8 @@ grammar Filter
   rule equality
     key ospace '=' ospace value
     {
-      def eval
-        { key.eval => value.eval }
+      def eval(env={})
+        { key.eval => value.eval(env) }
       end
     }
   end
@@ -42,8 +42,8 @@ grammar Filter
   rule gt
     key ospace '>' ospace value
     {
-      def eval
-        { key.eval => { '$gt' => value.eval } }
+      def eval(env={})
+        { key.eval => { '$gt' => value.eval(env) } }
       end
     }
   end
@@ -51,8 +51,8 @@ grammar Filter
   rule gte
     key ospace '>=' ospace value
     {
-      def eval
-        { key.eval => { '$gte' => value.eval } }
+      def eval(env={})
+        { key.eval(env) => { '$gte' => value.eval(env) } }
       end
     }
   end
@@ -60,8 +60,8 @@ grammar Filter
   rule lt
     key ospace '<' ospace value
     {
-      def eval
-        { key.eval => { '$lt' => value.eval } }
+      def eval(env={})
+        { key.eval(env) => { '$lt' => value.eval(env) } }
       end
     }
   end
@@ -69,8 +69,8 @@ grammar Filter
   rule lte
     key ospace '<=' ospace value
     {
-      def eval
-        { key.eval => { '$lte' => value.eval } }
+      def eval(env={})
+        { key.eval(env) => { '$lte' => value.eval(env) } }
       end
     }
   end
@@ -78,7 +78,7 @@ grammar Filter
   rule key
     [a-z_\.]+
     {
-      def eval
+      def eval(env={})
         text_value
       end
     }
@@ -91,8 +91,8 @@ grammar Filter
   rule strings
     string more:(ospace ',' ospace string)*
     {
-      def eval
-        strings.map { |e| e.eval }.join("|")
+      def eval(env={})
+        strings.map { |e| e.eval(env) }.join("|")
       end
       
       def strings
@@ -108,7 +108,7 @@ grammar Filter
   rule boolean_true
     'true'
     {
-      def eval
+      def eval(env={})
         true
       end
     }
@@ -117,7 +117,7 @@ grammar Filter
   rule boolean_false
     'false'
     {
-      def eval
+      def eval(env={})
         false
       end
     }
@@ -130,7 +130,7 @@ grammar Filter
   rule double_quoted_string
     '"' (!'"' .)* '"'
     {
-      def eval
+      def eval(env={})
         text_value[1 ... -1]
       end
     }
@@ -139,7 +139,7 @@ grammar Filter
   rule single_quoted_string
     '\'' (!'\'' .)* '\''
     {
-      def eval
+      def eval(env={})
         text_value[1 ... -1]
       end
     }
@@ -148,7 +148,7 @@ grammar Filter
   rule unquoted_string
     [^<>=, ]+
     {
-      def eval
+      def eval(env={})
         text_value
       end
     }
@@ -157,7 +157,7 @@ grammar Filter
   rule integer
     [0-9]+
     {
-      def eval
+      def eval(env={})
         text_value.to_i
       end
     }
