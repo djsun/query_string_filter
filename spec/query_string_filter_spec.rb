@@ -21,18 +21,6 @@ describe "QueryStringFilter" do
   end
   
   describe "=" do
-    it "with underscore" do
-      @filter.parse("with_underscore = test").should == {
-        "with_underscore" => "test"
-      }
-    end
-
-    it "with period" do
-      @filter.parse("released.year = 2008").should == {
-        'released.year' => 2008
-      }
-    end
-
     it "with single quotes" do
       @filter.parse("foo = 'bar camp'").should == {
         "foo" => "bar camp"
@@ -91,6 +79,18 @@ describe "QueryStringFilter" do
       ].each do |s|
         @filter.parse(s).should == expected
       end
+    end
+
+    it "with underscored key" do
+      @filter.parse("with_underscore = test").should == {
+        "with_underscore" => "test"
+      }
+    end
+
+    it "with period in key" do
+      @filter.parse("released.year = 2008").should == {
+        'released.year' => 2008
+      }
     end
   end
   
