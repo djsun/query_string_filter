@@ -92,6 +92,12 @@ describe "QueryStringFilter" do
         @filter.parse(s).should == expected
       end
     end
+
+    it "with 1 id" do
+      expected = { "id" => '224bc480f905f74b4c0c000011' }
+      s = "id=224bc480f905f74b4c0c000011"
+      @filter.parse(s).should == expected
+    end
     
     it "with 2 ids" do
       expected = {
