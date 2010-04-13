@@ -39,6 +39,7 @@ grammar Filter
     gt / gte / lt / lte
   end
   
+  # greater than
   rule gt
     key ospace '>' ospace value
     {
@@ -48,6 +49,7 @@ grammar Filter
     }
   end
   
+  # greater than or equal
   rule gte
     key ospace '>=' ospace value
     {
@@ -57,6 +59,7 @@ grammar Filter
     }
   end
   
+  # less than
   rule lt
     key ospace '<' ospace value
     {
@@ -65,7 +68,8 @@ grammar Filter
       end
     }
   end
-  
+
+  # less than or equal
   rule lte
     key ospace '<=' ospace value
     {
