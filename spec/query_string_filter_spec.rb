@@ -131,6 +131,18 @@ describe "QueryStringFilter" do
   end
   
   describe "compound" do
+    it "= with 2 strings" do
+      expected = {
+        "title" => 'election,texas'
+      }
+      [
+        "title=election,texas",
+        "title = election , texas"
+      ].each do |s|
+        @filter.parse(s).should == expected
+      end
+    end
+
     it ": with 2 strings" do
       expected = {
         "title" => /election|texas/

@@ -16,17 +16,43 @@ grammar Filter
   rule simple
     fuzzy / equality / inequality
   end
-
+  
   rule fuzzy
+    fuzzy_with_strings / fuzzy_with_string
+  end
+
+  rule fuzzy_with_strings
     key ospace ':' ospace strings
     {
       def eval
-        { key.eval => /#{strings.eval}/ }
+        { key.eval => /#{strings.eval('|')}/ }
       end
     }
   end
-
+  
+  rule fuzzy_with_string
+    key ospace ':' ospace string
+    {
+      def eval
+        { key.eval => /#{string.eval}/ }
+      end
+    }
+  end
+  
   rule equality
+    equality_with_strings / equality_with_value
+  end
+
+  rule equality_with_strings
+    key ospace '=' ospace strings
+    {
+      def eval
+        { key.eval => strings.eval(',') }
+      end
+    }
+  end
+  
+  rule equality_with_value
     key ospace '=' ospace value
     {
       def eval
@@ -93,10 +119,10 @@ grammar Filter
   end
   
   rule strings
-    string more:(ospace ',' ospace string)*
+    string more:(ospace ',' ospace string)+
     {
-      def eval
-        strings.map { |e| e.eval }.join("|")
+      def eval(separator)
+        strings.map { |e| e.eval }.join(separator)
       end
       
       def strings
